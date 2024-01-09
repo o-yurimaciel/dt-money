@@ -8,7 +8,6 @@ export function NewTransactionModal() {
             <Overlay />
             <Content>
                 <Dialog.Title>New transaction</Dialog.Title>
-                CloseButton
                 <CloseButton>
                     <X size={24}/>
                 </CloseButton>
