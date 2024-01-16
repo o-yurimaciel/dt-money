@@ -1,0 +1,20 @@
+{
+    "transactions": [
+        {
+            "id": 1,
+            "description": "Supermarket",
+            "type": "outcome",
+            "category": "sell",
+            "price": 14,
+            "createdAt": "2024-01-10T13:00:33.999Z"
+        },
+        {
+            "id": 1,
+            "description": "Job",
+            "type": "income",
+            "category": "sell",
+            "price": 8600,
+            "createdAt": "2024-01-10T13:04:33.999Z"
+        }
+    ]
+}
