@@ -1,72 +1,73 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-import { api } from "../lib/axios";
+import { ReactNode, createContext, useEffect, useState } from 'react'
+import { api } from '../lib/axios'
 
 interface Transaction {
-    id: number;
-    description: string;
-    type: 'income' | 'outcome';
-    price: number;
-    category: string;
-    createdAt: string;
+  id: number
+  description: string
+  type: 'income' | 'outcome'
+  price: number
+  category: string
+  createdAt: string
 }
 
 interface CreateTransactionInput {
-    description: string;
-    type: 'income' | 'outcome';
-    price: number;
-    category: string;
+  description: string
+  type: 'income' | 'outcome'
+  price: number
+  category: string
 }
 interface TransactionContextType {
-    transactions: Transaction[],
-    fetchTransactions: (query?: string) => Promise<void>,
-    createTransaction: (data: CreateTransactionInput) => Promise<void>
+  transactions: Transaction[]
+  fetchTransactions: (query?: string) => Promise<void>
+  createTransaction: (data: CreateTransactionInput) => Promise<void>
 }
 
 interface TransactionProviderProps {
-    children: ReactNode
+  children: ReactNode
 }
 
 export const TransactionsContext = createContext({} as TransactionContextType)
 
 export function TransactionsProvider({ children }: TransactionProviderProps) {
-    const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
 
-    async function fetchTransactions(query?: string) {
-        const response = await api.get('/transactions', {
-            params: {
-                description: query
-            }
-        })
+  async function fetchTransactions(query?: string) {
+    const response = await api.get('/transactions', {
+      params: {
+        description: query,
+      },
+    })
 
-        setTransactions(response.data)
-    }
+    setTransactions(response.data)
+  }
 
-    async function createTransaction(data: CreateTransactionInput) {
-        const { category, description, price, type } = data
+  async function createTransaction(data: CreateTransactionInput) {
+    const { category, description, price, type } = data
 
-        const response = await api.post('transactions', {
-            category,
-            description,
-            price,
-            type,
-            createdAt: new Date()
-        })
+    const response = await api.post('transactions', {
+      category,
+      description,
+      price,
+      type,
+      createdAt: new Date(),
+    })
 
-        setTransactions(state => [response.data, ...state])
-    }
+    setTransactions((state) => [response.data, ...state])
+  }
 
-    useEffect(() => {
-        fetchTransactions()
-    }, [])
+  useEffect(() => {
+    fetchTransactions()
+  }, [])
 
-    return (
-        <TransactionsContext.Provider 
-        value={{ 
-            transactions, 
-            fetchTransactions,
-            createTransaction
-        }}>
-            {children}
-        </TransactionsContext.Provider>
-    )
+  return (
+    <TransactionsContext.Provider
+      value={{
+        transactions,
+        fetchTransactions,
+        createTransaction,
+      }}
+    >
+      {children}
+    </TransactionsContext.Provider>
+  )
 }
